@@ -6,7 +6,8 @@ Authors@R:
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
-URL: https://github.com/DavisVaughan/crossfit
+URL: https://github.com/DavisVaughan/crossfit,
+    https://davisvaughan.github.io/crossfit/
 BugReports: https://github.com/DavisVaughan/crossfit/issues
 Imports: 
     cli,

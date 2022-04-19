@@ -1,10 +1,10 @@
 Package: crossfit
-Title: What the Package Does (One Line, Title Case)
+Title: CrossFit API
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Davis", "Vaughan", , "dvaughan1130@gmail.com", role = c("aut", "cre"))
+Description: Provides tooling for accessing the CrossFit API. This
+    includes data about the CrossFit Open and the CrossFit Games.
 License: MIT + file LICENSE
 URL: https://github.com/DavisVaughan/crossfit,
     https://davisvaughan.github.io/crossfit/

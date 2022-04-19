@@ -4,9 +4,9 @@
 \name{crossfit-package}
 \alias{crossfit}
 \alias{crossfit-package}
-\title{crossfit: What the Package Does (One Line, Title Case)}
+\title{crossfit: CrossFit API}
 \description{
-What the package does (one paragraph).
+Provides tooling for accessing the CrossFit API. This includes data about the CrossFit Open and the CrossFit Games.
 }
 \seealso{
 Useful links:
@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Davis Vaughan \email{dvaughan1130@gmail.com}
 
 }
 \keyword{internal}

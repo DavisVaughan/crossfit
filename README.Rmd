@@ -1,0 +1,52 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# crossfit
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of crossfit is to provide both high and low level access to the CrossFit API for both the CrossFit Games and the CrossFit Open. This API isn't documented, but seems somewhat stable.
+
+Because each endpoint seems to accept different subsets of parameters, it seemed easiest to wrap up a few of the common ones into high level helpers (`cf_open()` and `cf_games()`) while also providing low level access to the API (`cf_request()` and `cf_req_*()` helpers).
+
+## Installation
+
+You can install the development version of crossfit from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("DavisVaughan/crossfit")
+```
+
+## Example
+
+See `cf_open()` and `cf_games()` for high level access to the API. Their help pages have a few examples. See `cf_request()` for low level access.
+
+The results from `cf_open()` and `cf_games()` have been lightly pre-processed, but you typically need to use some tidyr wrangling tools to extract data of interest.
+
+```{r, message=FALSE, warning=FALSE}
+library(crossfit)
+library(dplyr)
+library(tidyr)
+
+cf_open(2022, division = cf_division$`Men (45-49)`, n_pages = 1) %>%
+  unnest_wider(entrant) %>%
+  hoist(scores, one = 1) %>%
+  select(competitorName, one) %>%
+  unnest_wider(one) %>%
+  select(competitorName, affiliate, score, breakdown)
+```
+

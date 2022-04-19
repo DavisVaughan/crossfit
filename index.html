@@ -59,9 +59,53 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
-Provides tooling for accessing the CrossFit API. This
-    includes data about the CrossFit Open and the CrossFit Games.
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="crossfit">crossfit<a class="anchor" aria-label="anchor" href="#crossfit"></a>
+</h1></div>
+<!-- badges: start -->
+<!-- badges: end -->
+<p>The goal of crossfit is to provide both high and low level access to the CrossFit API for both the CrossFit Games and the CrossFit Open. This API isn’t documented, but seems somewhat stable.</p>
+<p>Because each endpoint seems to accept different subsets of parameters, it seemed easiest to wrap up a few of the common ones into high level helpers (<code><a href="reference/cf_open.html">cf_open()</a></code> and <code><a href="reference/cf_games.html">cf_games()</a></code>) while also providing low level access to the API (<code><a href="reference/cf-request.html">cf_request()</a></code> and <code>cf_req_*()</code> helpers).</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of crossfit from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"DavisVaughan/crossfit"</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>See <code><a href="reference/cf_open.html">cf_open()</a></code> and <code><a href="reference/cf_games.html">cf_games()</a></code> for high level access to the API. Their help pages have a few examples. See <code><a href="reference/cf-request.html">cf_request()</a></code> for low level access.</p>
+<p>The results from <code><a href="reference/cf_open.html">cf_open()</a></code> and <code><a href="reference/cf_games.html">cf_games()</a></code> have been lightly pre-processed, but you typically need to use some tidyr wrangling tools to extract data of interest.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/crossfit" class="external-link">crossfit</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
+
+<span class="fu"><a href="reference/cf_open.html">cf_open</a></span><span class="op">(</span><span class="fl">2022</span>, division <span class="op">=</span> <span class="va">cf_division</span><span class="op">$</span><span class="va">`Men (45-49)`</span>, n_pages <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html" class="external-link">unnest_wider</a></span><span class="op">(</span><span class="va">entrant</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html" class="external-link">hoist</a></span><span class="op">(</span><span class="va">scores</span>, one <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">competitorName</span>, <span class="va">one</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html" class="external-link">unnest_wider</a></span><span class="op">(</span><span class="va">one</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">competitorName</span>, <span class="va">affiliate</span>, <span class="va">score</span>, <span class="va">breakdown</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 100 × 4</span>
+<span class="co">#&gt;    competitorName        affiliate             score   breakdown                </span>
+<span class="co">#&gt;    &lt;chr&gt;                 &lt;chr&gt;                 &lt;chr&gt;   &lt;chr&gt;                    </span>
+<span class="co">#&gt;  1 Angel Cardenas        CrossFit Galvanize    3000000 "10 rounds\n"            </span>
+<span class="co">#&gt;  2 Fernando Gonçalves    Equilibrio CrossFit   2830000 "9 rounds +\n3 wall walk…</span>
+<span class="co">#&gt;  3 Jason Grubb           &lt;NA&gt;                  2930000 "9 rounds +\n3 wall walk…</span>
+<span class="co">#&gt;  4 Justin LaSala         &lt;NA&gt;                  2890000 "9 rounds +\n3 wall walk…</span>
+<span class="co">#&gt;  5 Luiz Carlos Corniatti CrossFit Aclimacao    2850000 "9 rounds +\n3 wall walk…</span>
+<span class="co">#&gt;  6 Stephen Vassallo      CrossFit Hardshells   3000000 "10 rounds\n"            </span>
+<span class="co">#&gt;  7 Chris Scott           &lt;NA&gt;                  2820000 "9 rounds +\n3 wall walk…</span>
+<span class="co">#&gt;  8 Yurii Hanson          CrossFit Billings     2930000 "9 rounds +\n3 wall walk…</span>
+<span class="co">#&gt;  9 Craig Robinson        Fort to Fort CrossFit 2720000 "9 rounds +\n2 wall walk…</span>
+<span class="co">#&gt; 10 Peter Andersson       CrossFit Lomma        2900000 "9 rounds +\n3 wall walk…</span>
+<span class="co">#&gt; # … with 90 more rows</span></code></pre></div>
+</div>
+</div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
